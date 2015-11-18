@@ -37,6 +37,9 @@ namespace GremDemo
         // List of Static objects
         List<StaticObj> statObj = new List<StaticObj>();
 
+        // List of Imps
+        List<NPC> NPCs = new List<NPC>();
+
         // input support
         // mouse
         // keyboard
@@ -49,9 +52,9 @@ namespace GremDemo
 
             graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
             graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
-           // graphics.IsFullScreen = true;
+         // graphics.IsFullScreen = true;
 
-           IsMouseVisible = true;
+            IsMouseVisible = true;
 
         }
 
@@ -83,10 +86,11 @@ namespace GremDemo
            // gremSprites.Add(Content.Load<Texture2D>("CgremA01"));
             hero = Content.Load<Texture2D>("GremAnim");
             back = Content.Load<Texture2D>("back");
-
+            
             // create initial game objects
             gremlins.Add(new Gremlin(50, 400,hero,rnd));
             statObj.Add(new StaticObj(graphics,back));
+            NPCs.Add(new NPC(50,400,hero,rnd));
 
             // TODO: use this.Content to load your game content here
         }
@@ -113,6 +117,7 @@ namespace GremDemo
 
             spriteBatch.Begin();
             gremlins[0].Update(gameTime);
+            NPCs[0].Update(gameTime);
             spriteBatch.End();
             // TODO: Add your update logic here
             
@@ -130,6 +135,7 @@ namespace GremDemo
             spriteBatch.Begin();
             statObj[0].Draw(spriteBatch);
             gremlins[0].Draw(spriteBatch);
+            NPCs[0].Draw(spriteBatch);
             spriteBatch.End();
             // TODO: Add your drawing code here
 
