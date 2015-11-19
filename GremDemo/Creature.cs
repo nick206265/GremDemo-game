@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GremDemo
 {
-    class Creature
+    abstract class Creature
     {
         #region Fields
 

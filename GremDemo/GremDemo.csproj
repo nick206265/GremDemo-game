@@ -93,6 +93,7 @@
     <MonoGameContentReference Include="Content\GremDemoContent.mgcb" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="GremDemo_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

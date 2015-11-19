@@ -52,7 +52,7 @@ namespace GremDemo
 
             graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
             graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
-         // graphics.IsFullScreen = true;
+        //  graphics.IsFullScreen = true;
 
             IsMouseVisible = true;
 

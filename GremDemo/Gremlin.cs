@@ -73,7 +73,12 @@ namespace GremDemo
             else
             {
 
-                velocity.X = 0;
+                if (velocity.X > 0)
+                    velocity.X -= 0.2f;
+                else if (velocity.X < 0)
+                    velocity.X += 0.2f;
+                else
+                    velocity.X = 0;
 
                 if (currentAnimation != (int)Anim.Turn)
                 {
@@ -88,6 +93,15 @@ namespace GremDemo
 
             drawRect.X += (int)(velocity.X);
             drawRect.Y += (int)(velocity.Y);    //?
+
+            if (drawRect.X >= 650)
+            {
+                drawRect.X = 650;
+            }
+            else if (drawRect.X <= 10)
+            {
+                drawRect.X = 10;
+            }
 
             prevAnimation = currentAnimation;
 
