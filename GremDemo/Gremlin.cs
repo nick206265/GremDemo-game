@@ -15,8 +15,8 @@ namespace GremDemo
         #region Fields
     
         //input support
-        private Keys currentKey;
-
+        //private Keys currentKey;
+        KeyboardState kbState;
         #endregion
 
 
@@ -38,10 +38,10 @@ namespace GremDemo
 
        public override void Update(GameTime gameTime)
         {
-
-            currentKey = Keyboard.GetState().GetPressedKeys().LastOrDefault();
-
-            if (currentKey == Keys.Right)
+            //Moving by arrows
+            //currentKey = Keyboard.GetState().GetPressedKeys().LastOrDefault();
+            kbState = Keyboard.GetState();
+            if (kbState.IsKeyDown(Keys.Right))
             {
 
 
@@ -57,7 +57,7 @@ namespace GremDemo
 
             }
 
-            else if (currentKey == Keys.Left)
+            else if (kbState.IsKeyDown(Keys.Left))
             {
                 isRight = false;
 
@@ -94,6 +94,7 @@ namespace GremDemo
             drawRect.X += (int)(velocity.X);
             drawRect.Y += (int)(velocity.Y);    //?
 
+            //Level borders
             if (drawRect.X >= 650)
             {
                 drawRect.X = 650;
