@@ -8,17 +8,17 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GremDemo
 {
-    class StaticObj
+    abstract class Static : Entity
     {
         
         #region Fields
 
     
         // Drawing support
-        Texture2D sprite;
+        protected Texture2D sprite;
     
         // draw rectangle
-        Rectangle drawRect;
+       // protected Rectangle drawRect;
 
 
         #endregion
@@ -31,16 +31,9 @@ namespace GremDemo
 
         #region Constructors
 
-        public StaticObj(GraphicsDeviceManager graphics, Texture2D sprite)
+        public Static(Texture2D sprite)
         {
             this.sprite = sprite;
-
-            drawRect.X = 0;
-            drawRect.Y = 0;
-
-            drawRect.Width = graphics.PreferredBackBufferWidth;
-            drawRect.Height = graphics.PreferredBackBufferHeight;
-
 
         }
 

@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GremDemo
 {
-    abstract class Creature
+    abstract class Creature : Entity
     {
         #region Fields
 
@@ -27,7 +27,7 @@ namespace GremDemo
         // sprite sheet
         protected Texture2D spriteSheet;
         // draw rectangle (= collision rectangle?)
-        protected Rectangle drawRect;
+       // protected Rectangle drawRect;
 
         protected const int spriteWidth = 71;
         protected const int spriteHeight = 85;

@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace GremDemo
 {
-
+    //Enum class for state of the game
     enum GameState
     {
         PAUSED = 2,
@@ -26,17 +26,22 @@ namespace GremDemo
     /// </summary>
     public class DemoGame : Microsoft.Xna.Framework.Game
     {
-
+        //Initial state of the game - pause
         GameState GS = GameState.PAUSED;
         int DoOnce = 0;
 
+        //Initial value of game score
         int Score = 0;
-        const int SCORE_TO_WIN = 3000;
+        //Score needed to win the game
+        const int SCORE_TO_WIN = 60000;
 
+        //Font for all symbols in the game
         SpriteFont Arial;
 
+        //Random generator (for Idle anim in general)
         Random rnd = new Random();
 
+        //Screen(game window) resolution
         const int WINDOW_WIDTH = 800;
         const int WINDOW_HEIGHT = 600;
         
@@ -51,16 +56,12 @@ namespace GremDemo
         
         // List of gremlins
         List<Gremlin> gremlins = new List<Gremlin>();
-        
-        // List of Static objects
-        List<StaticObj> statObj = new List<StaticObj>();
 
-        // List of Imps
+        // List of Background objects
+        List<Background> backGround = new List<Background>();
+
+        // List of NPCs
         List<NPC> NPCs = new List<NPC>();
-
-        // input support
-        // mouse
-        // keyboard
 
 
         public DemoGame()
@@ -104,13 +105,12 @@ namespace GremDemo
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // load sprites for gremlin's animation
-           // gremSprites.Add(Content.Load<Texture2D>("CgremA01"));
             hero = Content.Load<Texture2D>("GremAnim");
             back = Content.Load<Texture2D>("back");
             
             // create initial game objects
             gremlins.Add(new Gremlin(50, 400,hero,rnd));
-            statObj.Add(new StaticObj(graphics,back));
+            backGround.Add(new Background(graphics,back));
             NPCs.Add(new NPC(50,400,hero,rnd));
 
             // TODO: use this.Content to load your game content here
@@ -136,6 +136,10 @@ namespace GremDemo
             // Allows the game to exit
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
+
+            //Allow the game to pause
+            if (Keyboard.GetState().IsKeyDown(Keys.Tab))
+                GS = GameState.PAUSED;
 
             if (GS == GameState.PAUSED)
             {
@@ -173,20 +177,20 @@ namespace GremDemo
             if (GS == GameState.PAUSED)
             {
                 GraphicsDevice.Clear(Color.CornflowerBlue);
+
                 spriteBatch.Begin();
 
 
-
-                statObj[0].Draw(spriteBatch);
+                backGround[0].Draw(spriteBatch);
                 gremlins[0].Draw(spriteBatch);
                 NPCs[0].Draw(spriteBatch);
-
 
                 spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
                 spriteBatch.DrawString(Arial, "Time left: " + (60 - Score / 1000).ToString(), new Vector2(300, 100), Color.Black);
                 spriteBatch.DrawString(Arial,
-                    "You must stay alive after one minute of the game.\n You get scores for the survival time.\n To start - press Enter",
+"You must stay alive after one minute of the game.\n You get scores for the survival time.\n To start - press ENTER\nTo pause - press TAB\nIf you want to exit - press ESC",
                     new Vector2(400, 100), Color.Black);
+
 
                 spriteBatch.End();
             }
@@ -196,29 +200,34 @@ namespace GremDemo
                 GraphicsDevice.Clear(Color.CornflowerBlue);
 
                 spriteBatch.Begin();
+                
 
-
-
-                statObj[0].Draw(spriteBatch);
+                backGround[0].Draw(spriteBatch);
                 gremlins[0].Draw(spriteBatch);
                 NPCs[0].Draw(spriteBatch);
-
-
+                
                 spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
                 spriteBatch.DrawString(Arial, "Time left: " + (60 - Score / 1000).ToString(), new Vector2(300, 100), Color.Black);
+
 
                 spriteBatch.End();
             }
             else if (GS == GameState.WIN)
             {
                 GraphicsDevice.Clear(Color.CornflowerBlue);
+
                 spriteBatch.Begin();
-                statObj[0].Draw(spriteBatch);
+
+
+                backGround[0].Draw(spriteBatch);
                 gremlins[0].Draw(spriteBatch);
                 NPCs[0].Draw(spriteBatch);
+
                 spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
                 spriteBatch.DrawString(Arial, "Time left: " + (60-Score/1000).ToString(), new Vector2(300, 100), Color.Black);
+
                 spriteBatch.DrawString(Arial, "YOU WIN!\nPRESS ESC TO EXIT", new Vector2(400, 150), Color.Red);
+
 
                 spriteBatch.End();
             }
