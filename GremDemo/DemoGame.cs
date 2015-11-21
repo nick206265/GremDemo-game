@@ -17,6 +17,10 @@ namespace GremDemo
     public class DemoGame : Microsoft.Xna.Framework.Game
     {
 
+        int Score;
+
+        SpriteFont Arial;
+
         Random rnd = new Random();
 
         const int WINDOW_WIDTH = 800;
@@ -79,6 +83,9 @@ namespace GremDemo
         /// </summary>
         protected override void LoadContent()
         {
+
+            Arial = Content.Load<SpriteFont>("Arial");
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -111,6 +118,9 @@ namespace GremDemo
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
+            Score += gameTime.ElapsedGameTime.Milliseconds;
+
             // Allows the game to exit
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
@@ -133,9 +143,17 @@ namespace GremDemo
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
+
+            
+
             statObj[0].Draw(spriteBatch);
             gremlins[0].Draw(spriteBatch);
             NPCs[0].Draw(spriteBatch);
+
+
+            spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
+
+
             spriteBatch.End();
             // TODO: Add your drawing code here
 

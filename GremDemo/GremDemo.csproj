@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
+    <None Include="Content\Arial.spritefont" />
     <None Include="GremDemo_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
