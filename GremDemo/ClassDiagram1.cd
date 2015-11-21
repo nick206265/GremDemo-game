@@ -10,14 +10,14 @@
   <Class Name="GremDemo.DemoGame" Collapsed="true">
     <Position X="6" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQEEEEACUAAAwAAAACAAAAAAAAAAAgAAAAAAAIAAAQ=</HashCode>
+      <HashCode>AAQEEEEACUAAAwgAABCAAAAAAAAAAAgAAAAAAAIAAQQ=</HashCode>
       <FileName>DemoGame.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GremDemo.Gremlin" Collapsed="true">
     <Position X="2.75" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Gremlin.cs</FileName>
     </TypeIdentifier>
   </Class>

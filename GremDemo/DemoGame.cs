@@ -11,13 +11,27 @@ using Microsoft.Xna.Framework.Media;
 
 namespace GremDemo
 {
+
+    enum GameState
+    {
+        PAUSED = 2,
+        WIN = 1,
+        RUNNING = 0,
+        GAMEOVER = -1
+
+    }
+
     /// <summary>
     /// This is the main type for your game
     /// </summary>
     public class DemoGame : Microsoft.Xna.Framework.Game
     {
 
-        int Score;
+        GameState GS = GameState.PAUSED;
+        int DoOnce = 0;
+
+        int Score = 0;
+        const int SCORE_TO_WIN = 3000;
 
         SpriteFont Arial;
 
@@ -119,18 +133,34 @@ namespace GremDemo
         protected override void Update(GameTime gameTime)
         {
 
-            Score += gameTime.ElapsedGameTime.Milliseconds;
-
             // Allows the game to exit
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
 
-            spriteBatch.Begin();
-            gremlins[0].Update(gameTime);
-            NPCs[0].Update(gameTime);
-            spriteBatch.End();
-            // TODO: Add your update logic here
-            
+            if (GS == GameState.PAUSED)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                    GS = GameState.RUNNING;
+            }
+
+            if (GS == GameState.RUNNING)
+            {
+                Score += gameTime.ElapsedGameTime.Milliseconds;
+
+                gremlins[0].Update(gameTime);
+                NPCs[0].Update(gameTime);
+
+                //Win conditions
+                if (Score >= SCORE_TO_WIN && DoOnce == 0)
+                {
+                    GS = GameState.WIN;
+                    DoOnce = 1;
+
+                }
+
+                // TODO: Add your update logic here
+            }
+
             base.Update(gameTime);
         }
 
@@ -140,21 +170,58 @@ namespace GremDemo
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            spriteBatch.Begin();
-
-            
-
-            statObj[0].Draw(spriteBatch);
-            gremlins[0].Draw(spriteBatch);
-            NPCs[0].Draw(spriteBatch);
+            if (GS == GameState.PAUSED)
+            {
+                GraphicsDevice.Clear(Color.CornflowerBlue);
+                spriteBatch.Begin();
 
 
-            spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
+
+                statObj[0].Draw(spriteBatch);
+                gremlins[0].Draw(spriteBatch);
+                NPCs[0].Draw(spriteBatch);
 
 
-            spriteBatch.End();
+                spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
+                spriteBatch.DrawString(Arial, "Time left: " + (60 - Score / 1000).ToString(), new Vector2(300, 100), Color.Black);
+                spriteBatch.DrawString(Arial,
+                    "You must stay alive after one minute of the game.\n You get scores for the survival time.\n To start - press Enter",
+                    new Vector2(400, 100), Color.Black);
+
+                spriteBatch.End();
+            }
+
+            if (GS == GameState.RUNNING)
+            {
+                GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                spriteBatch.Begin();
+
+
+
+                statObj[0].Draw(spriteBatch);
+                gremlins[0].Draw(spriteBatch);
+                NPCs[0].Draw(spriteBatch);
+
+
+                spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
+                spriteBatch.DrawString(Arial, "Time left: " + (60 - Score / 1000).ToString(), new Vector2(300, 100), Color.Black);
+
+                spriteBatch.End();
+            }
+            else if (GS == GameState.WIN)
+            {
+                GraphicsDevice.Clear(Color.CornflowerBlue);
+                spriteBatch.Begin();
+                statObj[0].Draw(spriteBatch);
+                gremlins[0].Draw(spriteBatch);
+                NPCs[0].Draw(spriteBatch);
+                spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
+                spriteBatch.DrawString(Arial, "Time left: " + (60-Score/1000).ToString(), new Vector2(300, 100), Color.Black);
+                spriteBatch.DrawString(Arial, "YOU WIN!\nPRESS ESC TO EXIT", new Vector2(400, 150), Color.Red);
+
+                spriteBatch.End();
+            }
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);

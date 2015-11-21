@@ -284,7 +284,7 @@ namespace GremDemo
         // all about velocity, collisions, gravitation etc.
         protected void Physics(GameTime gameTime)
         {
-
+            
         }
 
         #endregion
