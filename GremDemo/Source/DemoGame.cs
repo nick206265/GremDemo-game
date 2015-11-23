@@ -76,9 +76,9 @@ namespace GremDemo
 
             graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
             graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
-        //  graphics.IsFullScreen = true;
+          graphics.IsFullScreen = true;
 
-            IsMouseVisible = true;
+        //    IsMouseVisible = true;
 
         }
 
@@ -151,6 +151,26 @@ namespace GremDemo
             //Allow the game to pause
             if (Keyboard.GetState().IsKeyDown(Keys.Tab))
                 GS = GameState.PAUSED;
+
+            //Allow the game to restart
+            if (Keyboard.GetState().IsKeyDown(Keys.R))
+            {
+                GS = GameState.PAUSED;
+                Score = 0;
+                
+                stones.Clear();
+
+                for (int i = 0; i < countOfStones; i++)
+                {
+                    stones.Add(new Stone(stone, rnd));
+                }
+
+                gremlins.Clear();
+                gremlins.Add(new Gremlin(50, 400, hero, rnd));
+
+                NPCs.Clear();
+                NPCs.Add(new NPC(50, 400, hero, rnd));
+            }
 
             if (GS == GameState.PAUSED)
             {
@@ -271,7 +291,7 @@ namespace GremDemo
                 spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
                 spriteBatch.DrawString(Arial, "Time left: " + (60-Score/1000).ToString(), new Vector2(300, 100), Color.Black);
 
-                spriteBatch.DrawString(Arial, "YOU WIN!\nPRESS ESC TO EXIT", new Vector2(400, 150), Color.Red);
+                spriteBatch.DrawString(Arial, "YOU WIN!\nPRESS ESC TO EXIT.\nPRESS \"R\" TO RESTART", new Vector2(400, 150), Color.Red);
 
 
                 spriteBatch.End();
@@ -298,7 +318,7 @@ namespace GremDemo
                 spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
                 spriteBatch.DrawString(Arial, "Time left: " + (60 - Score / 1000).ToString(), new Vector2(300, 100), Color.Black);
 
-                spriteBatch.DrawString(Arial, "YOU LOOSE! GAME IS OVER.\nPRESS ESC TO EXIT", new Vector2(400, 150), Color.Red);
+                spriteBatch.DrawString(Arial, "YOU LOOSE! GAME IS OVER.\nPRESS ESC TO EXIT.\nPRESS \"R\" TO RESTART", new Vector2(400, 150), Color.Red);
 
                 spriteBatch.End();
             }
