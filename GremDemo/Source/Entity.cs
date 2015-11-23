@@ -10,7 +10,7 @@ namespace GremDemo
 {
     abstract class Entity
     {
-        protected Rectangle drawRect;
+        public Rectangle drawRect;
 
         //public Entity()
         //{

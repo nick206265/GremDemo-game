@@ -14,7 +14,7 @@ namespace GremDemo
         public NPC(int X, int Y, Texture2D spriteSheet, Random rnd)
             : base(X, Y, spriteSheet, rnd)
         {
-
+            transparency = 0.6f;
         }
 
 

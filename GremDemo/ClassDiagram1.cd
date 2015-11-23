@@ -1,31 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="GremDemo.Background" Collapsed="true">
-    <Position X="4" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Source\Background.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="GremDemo.Creature" Collapsed="true">
-    <Position X="1.5" Y="1.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>gARUAFAAAMIAAgACEAICAAAAAAAQAAAQwAQTKQAQABA=</HashCode>
-      <FileName>Source\Creature.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="GremDemo.DemoGame" Collapsed="true">
-    <Position X="8" Y="1" Width="1.5" />
+    <Position X="8" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQEEEEACUAAAwgAABCAAAAAIAAAAAgAAAAAEAIAAQQ=</HashCode>
+      <HashCode>AAQEEEEACUACAwgAABCAAAAAIAAQAAgAAAAAAAIAAQQ=</HashCode>
       <FileName>Source\DemoGame.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GremDemo.Gremlin" Collapsed="true">
-    <Position X="0.5" Y="3" Width="1.5" />
+  <Class Name="GremDemo.Entity" Collapsed="true">
+    <Position X="2.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Source\Gremlin.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Source\Entity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GremDemo.Creature" Collapsed="true">
+    <Position X="1.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gARUAFAAAMIAAgACEAICAIAAAAAQAAAQwAQTKQAQABA=</HashCode>
+      <FileName>Source\Creature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GremDemo.Effect" Collapsed="true">
+    <Position X="6" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Source\Effect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GremDemo.Static" Collapsed="true">
+    <Position X="4.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAgAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Source\Static.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GremDemo.Program" Collapsed="true">
+    <Position X="10" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Source\Program.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GremDemo.NPC" Collapsed="true">
@@ -35,43 +49,36 @@
       <FileName>Source\NPC.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GremDemo.Program" Collapsed="true">
-    <Position X="10" Y="1.5" Width="1.5" />
+  <Class Name="GremDemo.Gremlin" Collapsed="true">
+    <Position X="0.5" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
-      <FileName>Source\Program.cs</FileName>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Source\Gremlin.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GremDemo.Static" Collapsed="true">
-    <Position X="4" Y="1.75" Width="1.5" />
+  <Class Name="GremDemo.Shell" Collapsed="true">
+    <Position X="6" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAgAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Source\Static.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="GremDemo.Entity" Collapsed="true">
-    <Position X="3.25" Y="0.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
-      <FileName>Source\Entity.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="GremDemo.Source.Effect" Collapsed="true">
-    <Position X="5.75" Y="1.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Source\Effect.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="GremDemo.Source.Shell" Collapsed="true">
-    <Position X="5.75" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAQQAAAAAAA=</HashCode>
       <FileName>Source\Shell.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="GremDemo.Stone" Collapsed="true">
+    <Position X="6" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAAAAAAAAAgAAEAAAAAAAAAAAAAAAAEAAAAAQAAA=</HashCode>
+      <FileName>Source\Stone.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GremDemo.Background" Collapsed="true">
+    <Position X="4.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Source\Background.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Enum Name="GremDemo.GameState" Collapsed="true">
-    <Position X="8" Y="2" Width="1.5" />
+    <Position X="8" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IAAAAAAAIAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAABAA=</HashCode>
       <FileName>Source\DemoGame.cs</FileName>

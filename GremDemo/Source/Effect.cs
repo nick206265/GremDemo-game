@@ -3,10 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace GremDemo.Source
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
+namespace GremDemo
 {
     abstract class Effect : Entity
     {
 
+        public virtual void Update(GameTime gameTime)
+        {
+
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            
+        }
     }
 }

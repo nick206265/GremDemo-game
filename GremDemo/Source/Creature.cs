@@ -24,6 +24,8 @@ namespace GremDemo
 
         // Drawing support
 
+        protected float transparency = 1f;
+
         // sprite sheet
         protected Texture2D spriteSheet;
         // draw rectangle (= collision rectangle?)
@@ -95,10 +97,10 @@ namespace GremDemo
         {
 
             if (isRight)
-                spriteBatch.Draw(spriteSheet, new Vector2(drawRect.X, drawRect.Y), new Rectangle(spriteWidth * currentAnimationFrame, spriteHeight * currentAnimation, spriteWidth, spriteHeight), Color.White);
+                spriteBatch.Draw(spriteSheet, new Vector2(drawRect.X, drawRect.Y), new Rectangle(spriteWidth * currentAnimationFrame, spriteHeight * currentAnimation, spriteWidth, spriteHeight), Color.White * transparency);
 
             else
-                spriteBatch.Draw(spriteSheet, drawRect, new Rectangle(spriteWidth * currentAnimationFrame, spriteHeight * currentAnimation, spriteWidth, spriteHeight), Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(spriteSheet, drawRect, new Rectangle(spriteWidth * currentAnimationFrame, spriteHeight * currentAnimation, spriteWidth, spriteHeight), Color.White * transparency, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
 
 
         }

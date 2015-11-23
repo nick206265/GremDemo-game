@@ -13,11 +13,11 @@ namespace GremDemo
 {
     //Enum class for state of the game
     enum GameState
-    {
-        PAUSED = 2,
-        WIN = 1,
-        RUNNING = 0,
-        GAMEOVER = -1
+    {        
+        RUNNING,
+        PAUSED,
+        WIN,
+        GAMEOVER
 
     }
 
@@ -28,12 +28,13 @@ namespace GremDemo
     {
         //Initial state of the game - pause
         GameState GS = GameState.PAUSED;
-        int DoOnce = 0;
 
         //Initial value of game score
         int Score = 0;
         //Score needed to win the game
         const int SCORE_TO_WIN = 60000;
+
+        const int countOfStones = 10;
 
         //Font for all symbols in the game
         SpriteFont Arial;
@@ -53,7 +54,10 @@ namespace GremDemo
 
         // for gremlin drawing method
         Texture2D hero;
-        
+
+        // for stones
+        Texture2D stone;
+
         // List of gremlins
         List<Gremlin> gremlins = new List<Gremlin>();
 
@@ -63,6 +67,7 @@ namespace GremDemo
         // List of NPCs
         List<NPC> NPCs = new List<NPC>();
 
+        List<Stone> stones = new List<Stone>();
 
         public DemoGame()
         {
@@ -107,11 +112,17 @@ namespace GremDemo
             // load sprites for gremlin's animation
             hero = Content.Load<Texture2D>("GremAnim");
             back = Content.Load<Texture2D>("back");
-            
+            stone = Content.Load<Texture2D>("stone");
+
             // create initial game objects
             gremlins.Add(new Gremlin(50, 400,hero,rnd));
             backGround.Add(new Background(graphics,back));
             NPCs.Add(new NPC(50,400,hero,rnd));
+
+            for (int i = 0; i < countOfStones; i++)
+            {
+                stones.Add(new Stone(stone, rnd));
+            }
 
             // TODO: use this.Content to load your game content here
         }
@@ -149,17 +160,29 @@ namespace GremDemo
 
             if (GS == GameState.RUNNING)
             {
+                // gameover conditions
+                foreach (Stone stone in stones)
+                {
+                    if (stone.collisionRect.Intersects(gremlins[0].drawRect))
+                    {
+                        GS = GameState.GAMEOVER;
+                    }
+                }
+
                 Score += gameTime.ElapsedGameTime.Milliseconds;
 
                 gremlins[0].Update(gameTime);
                 NPCs[0].Update(gameTime);
 
-                //Win conditions
-                if (Score >= SCORE_TO_WIN && DoOnce == 0)
+                foreach (Stone stone in stones)
+                {
+                    stone.Update(gameTime);
+                }
+
+                    //Win conditions
+                    if (Score >= SCORE_TO_WIN)
                 {
                     GS = GameState.WIN;
-                    DoOnce = 1;
-
                 }
 
                 // TODO: Add your update logic here
@@ -183,6 +206,13 @@ namespace GremDemo
 
                 backGround[0].Draw(spriteBatch);
                 gremlins[0].Draw(spriteBatch);
+                
+
+                foreach (Stone stone in stones)
+                {
+                    stone.Draw(spriteBatch);
+                }
+
                 NPCs[0].Draw(spriteBatch);
 
                 spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
@@ -204,15 +234,23 @@ namespace GremDemo
 
                 backGround[0].Draw(spriteBatch);
                 gremlins[0].Draw(spriteBatch);
-                NPCs[0].Draw(spriteBatch);
                 
+
+                foreach (Stone stone in stones)
+                {
+                    stone.Draw(spriteBatch);
+                }
+
+                NPCs[0].Draw(spriteBatch);
+
                 spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
                 spriteBatch.DrawString(Arial, "Time left: " + (60 - Score / 1000).ToString(), new Vector2(300, 100), Color.Black);
 
 
                 spriteBatch.End();
             }
-            else if (GS == GameState.WIN)
+
+            if (GS == GameState.WIN)
             {
                 GraphicsDevice.Clear(Color.CornflowerBlue);
 
@@ -221,6 +259,13 @@ namespace GremDemo
 
                 backGround[0].Draw(spriteBatch);
                 gremlins[0].Draw(spriteBatch);
+                
+
+                //foreach (Stone stone in stones)
+                //{
+                //    stone.Draw(spriteBatch);
+                //}
+
                 NPCs[0].Draw(spriteBatch);
 
                 spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
@@ -228,6 +273,32 @@ namespace GremDemo
 
                 spriteBatch.DrawString(Arial, "YOU WIN!\nPRESS ESC TO EXIT", new Vector2(400, 150), Color.Red);
 
+
+                spriteBatch.End();
+            }
+
+            if (GS == GameState.GAMEOVER)
+            {
+                GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                spriteBatch.Begin();
+
+
+                backGround[0].Draw(spriteBatch);
+                gremlins[0].Draw(spriteBatch);
+
+                foreach (Stone stone in stones)
+                {
+                    if (stone.collisionRect.Intersects(gremlins[0].drawRect))
+                    stone.Draw(spriteBatch);
+                }
+
+                NPCs[0].Draw(spriteBatch);
+
+                spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
+                spriteBatch.DrawString(Arial, "Time left: " + (60 - Score / 1000).ToString(), new Vector2(300, 100), Color.Black);
+
+                spriteBatch.DrawString(Arial, "YOU LOOSE! GAME IS OVER.\nPRESS ESC TO EXIT", new Vector2(400, 150), Color.Red);
 
                 spriteBatch.End();
             }
