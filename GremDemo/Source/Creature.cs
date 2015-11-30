@@ -1,11 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿/************************************************************************
+* Project Type : MonoGame Windows project                               *
+* Project Name : GremDemo                                               *
+* File Name    : Creature.cs                                            *
+* Programmers  : Колесников А.П. Кириллин С.Д.                          *
+* Created      : 17/11/15                                               *
+* Last Revision: 30/11/15                                               *
+* Comments     : MonoGame game project using DirectX                    *
+*                                                                       *
+* Для запуска и сборки данной программы необходимо установить:          *   
+*  1) MonoGame 3.4                                                      *
+*  2) Microsoft .Net Framework 4                                        * 
+* Решение (solution) для Visual Studio 2015 Community                   *
+*************************************************************************/
+
+using System;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace GremDemo
 {
@@ -13,7 +24,6 @@ namespace GremDemo
     {
         #region Fields
 
-        protected Random rnd;
 
         // Physics support
 
@@ -28,13 +38,15 @@ namespace GremDemo
 
         // sprite sheet
         protected Texture2D spriteSheet;
-        // draw rectangle (= collision rectangle?)
-       // protected Rectangle drawRect;
 
+        // Размеры спрайта (текстуры)
         protected const int spriteWidth = 71;
         protected const int spriteHeight = 85;
 
         // anim support
+
+        // Генератор случайных чисел для анимации бездействия
+        protected Random rnd;
 
         // count of frames in animation
         protected const int framesWalk = 9;
@@ -49,20 +61,30 @@ namespace GremDemo
         protected const int speedFrameTurn = 70;
         protected const int speedFrameIdle = 150;
 
+        // перечисление всех видов анимации
         protected enum Anim : int { Move = 0, Stay = 1, Turn = 2, Idle = 3 };
+        // текущая анимация
         protected int currentAnimation = 1;
+        // предыдущая проигрываемая анимация
         protected int prevAnimation = 1;
 
         protected int timeBeforeIdle = 0;     // time before question about playing Idle animation
         protected const int questionTime = 3000;    // time between each question
+        // переменная для записи результата "броска кубика"
         protected int idleAnswer = 0;
+        // 
         protected bool doOnce = false;
 
+        // текущий кадр анимации
         protected int currentAnimationFrame = 0;
+        // время, прошедшее со смены последнего кадра
         protected int timeSinceLastFrame = 0;
+        // время, отводимое на один кадр анимации
         protected int msecPerFrame = speedFrameStay;
 
+        // флаг (существо смотрит направо или налево)
         protected bool isRight = true;
+        //  штука для запоминания предыдущего положения
         protected bool isRightPrev = true;
 
         #endregion
@@ -72,30 +94,37 @@ namespace GremDemo
         #endregion
 
         #region Constructors
+        // Конструктор
+        // Параметры: координаты существа на экране, текстура (спрайт), генератор случайных чисел для анимаций
         protected Creature(int X, int Y, Texture2D spriteSheet, Random rnd)
         {
+            //
             this.spriteSheet = spriteSheet;
 
+            // задаем координаты существа
             drawRect.X = X;
             drawRect.Y = Y;
 
+            // приводим прямоугольник отрисовки в соответствие спрайту (по размеру)
             drawRect.Width = spriteWidth;
             drawRect.Height = spriteHeight;
 
+            //
             this.rnd = rnd;
         }
         #endregion
 
         #region Public methods
+        // Метод, реализующий логику обновления состояния существа
         public virtual void Update(GameTime gameTime)
         {
 
         }
 
-
+        // Метод, отвечающий за отрисовку существа
         public void Draw(SpriteBatch spriteBatch)
         {
-
+            // если повернут направо - нарисовать повернутым направо и т.д.
             if (isRight)
                 spriteBatch.Draw(spriteSheet, new Vector2(drawRect.X, drawRect.Y), new Rectangle(spriteWidth * currentAnimationFrame, spriteHeight * currentAnimation, spriteWidth, spriteHeight), Color.White * transparency);
 
@@ -107,26 +136,31 @@ namespace GremDemo
         #endregion
 
         #region Protected methods
+        // метод для анимации в момент отсутствия движения существа
         protected void Stay(GameTime gameTime)
         {
 
-
+            // время до попытки срабатывания анимации Idle 
             timeBeforeIdle += gameTime.ElapsedGameTime.Milliseconds;
 
+            // если оно достигло величины, когда нужно "кинуть кости"
             if (timeBeforeIdle > questionTime)
             {
 
-
+                // "кидем кости"
                 if (doOnce == false)
                 {
                     idleAnswer = rnd.Next(3);
                     doOnce = true;
                 }
+                // если "успех" (шанс 25%)
                 if (idleAnswer == 0)
                 {
+                    // проиграть анимацию Idle
                     #region Idle
                     currentAnimation = (int)Anim.Idle;
 
+                    // если поменяли анимацию - устанавливаем параметры для новой анимации
                     if (currentAnimation != prevAnimation)
                     {
                         //timeBeforeIdle = 0;
@@ -135,20 +169,25 @@ namespace GremDemo
                         msecPerFrame = speedFrameIdle;
                     }
 
+                    // "накручиваем" время, прошедшее с последней смены кадра
                     timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
 
-
+                    // если пришло время для смены кадра
                     if (timeSinceLastFrame > msecPerFrame)
                     {
+                        // обнулем счетчик прошедшего с последней смены кадра времени
                         timeSinceLastFrame = 0;
 
+                        // если кадр не последний
                         if (currentAnimationFrame < framesIdle - 1)
                         {
+                            // переключить кадр на следующий
                             currentAnimationFrame++;
                             //timeBeforeIdle = questionTime + 1;
                         }
                         else
                         {
+                            // выйти из анимации Idle
                             doOnce = false;
                             timeBeforeIdle = 0;
                         }
@@ -159,7 +198,7 @@ namespace GremDemo
                 else
                 {
                     #region StayAfterQuestion
-
+                    // иначе не проигрывать анимацию Idle
                     timeBeforeIdle = 0;
                     doOnce = false;
 
@@ -168,11 +207,12 @@ namespace GremDemo
             }
             else
             {
+                // проиграть анимацию Stay
                 #region Stay
-
 
                 currentAnimation = (int)Anim.Stay;
 
+                // если поменяли анимацию - устанавливаем параметры для новой анимации
                 if (currentAnimation != prevAnimation)
                 {
                     timeBeforeIdle = 0;
@@ -181,38 +221,46 @@ namespace GremDemo
                     msecPerFrame = speedFrameStay;
                 }
 
+                // "накручиваем" время, прошедшее с последней смены кадра
                 timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
 
-
+                // если пришло время сменить кадр
                 if (timeSinceLastFrame > msecPerFrame)
                 {
+                    // обнуляем время с последней смены кадра
                     timeSinceLastFrame = 0;
 
+                    // если кадр не последний
                     if (currentAnimationFrame < framesStay - 1)
                     {
+                        // переключить кадр на следующий
                         currentAnimationFrame++;
                     }
                     else
                     {
+                        // иначе - начать проигрывать анимацию заново (с начального кадра)
                         currentAnimationFrame = 0;
                     }
                 }
                 #endregion
             }
 
+            // запоминаем предыдущий "поворот" существа
             isRightPrev = isRight;
-
         }
 
+        // метод для анимации движения существа
         protected void Move(GameTime gameTime)
         {
-
+            // если существо не разворачивалось
             if (isRight == isRightPrev)
             {
+                // проиграть анимацию Move
                 #region Move
 
                 currentAnimation = (int)Anim.Move;
 
+                // если поменяли анимацию - устанавливаем параметры для новой анимации
                 if (currentAnimation != prevAnimation)
                 {
                     timeBeforeIdle = 0;
@@ -221,26 +269,33 @@ namespace GremDemo
                     msecPerFrame = speedFrameWalk;
                 }
 
+                // "накручиваем" время, прошедшее с последней смены кадра
                 timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
 
+                // если пришло время сменить кадр
                 if (timeSinceLastFrame > msecPerFrame)
                 {
+                    // обнуляем время с последней смены кадра
                     timeSinceLastFrame = 0;
 
+                    // если кадр не последний - переключить кадр на следующий
                     if (currentAnimationFrame < framesWalk - 1) currentAnimationFrame++;
+                    // иначе - начать проигрывать анимацию заново (с начального кадра)
                     else currentAnimationFrame = 1;
                 }
 
+                // запоминаем предыдущий "поворот" существа
                 isRightPrev = isRight;
 
                 #endregion
             }
             else
             {
-
+                // если существо развернулось - проиграть анимацию поворота
                 #region Turn
                 currentAnimation = (int)Anim.Turn;
 
+                // если поменяли анимацию - устанавливаем параметры для новой анимации
                 if (currentAnimation != prevAnimation)
                 {
                     timeBeforeIdle = 0;
@@ -249,35 +304,30 @@ namespace GremDemo
                     msecPerFrame = speedFrameTurn;
                 }
 
+                // "накручиваем" время, прошедшее с последней смены кадра
                 timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
 
+                // если пришло время сменить кадр
                 if (timeSinceLastFrame > msecPerFrame)
                 {
+                    // обнуляем время с последней смены кадра
                     timeSinceLastFrame = 0;
 
+                    // если кадр не последний
                     if (currentAnimationFrame < framesTurn - 1)
                     {
+                        // переключить кадр на следующий
                         currentAnimationFrame++;
+                        // "не выпускать" из этой анимации
                         isRightPrev = !isRight;
-                        //velocity.X = 0;
-
-                        //
-                        //if (!Keyboard.GetState().IsKeyDown(Keys.Right))
-                        //{ 
-
-                        //}
-                        //
-
                     }
                     else
                     {
+                        // иначе (когда все кадры проигрались) - выйти из анимации
                         isRightPrev = isRight;
-
                     }
                 }
                 // turn!!
-
-
 
                 #endregion
             }
@@ -294,3 +344,4 @@ namespace GremDemo
 
     }
 }
+/*    end of file Creature.cs */

@@ -1,13 +1,28 @@
+/************************************************************************
+* Project Type : MonoGame Windows project                               *
+* Project Name : GremDemo                                               *
+* File Name    : DemoGame.cs                                            *
+* Programmers  : Колесников А.П. Кириллин С.Д.                          *
+* Created      : 17/11/15                                               *
+* Last Revision: 30/11/15                                               *
+* Comments     : MonoGame game project using DirectX                    *
+*                                                                       *
+* Для запуска и сборки данной программы необходимо установить:          *   
+*  1) MonoGame 3.4                                                      *
+*  2) Microsoft .Net Framework 4                                        * 
+* Решение (solution) для Visual Studio 2015 Community                   *
+*************************************************************************/
+
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
+
+// Framework для создания игр
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-//using Microsoft.Xna.Framework.GamerServices;
+// Поддержка графики (DirectX - SharpDX)
 using Microsoft.Xna.Framework.Graphics;
+// Обработка ввода (клавиатура, мышь)
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
 namespace GremDemo
 {
@@ -34,6 +49,7 @@ namespace GremDemo
         //Score needed to win the game
         const int SCORE_TO_WIN = 60000;
 
+        // Максимальное количество камней на экране
         const int countOfStones = 10;
 
         //Font for all symbols in the game
@@ -46,6 +62,7 @@ namespace GremDemo
         const int WINDOW_WIDTH = 800;
         const int WINDOW_HEIGHT = 600;
         
+        // Объекты, инкапсулирующие методы работы с графикой
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -58,6 +75,7 @@ namespace GremDemo
         // for stones
         Texture2D stone;
 
+        // Collections for game objects
         // List of gremlins
         List<Gremlin> gremlins = new List<Gremlin>();
 
@@ -67,18 +85,23 @@ namespace GremDemo
         // List of NPCs
         List<NPC> NPCs = new List<NPC>();
 
+        // List of stones
         List<Stone> stones = new List<Stone>();
 
+        // Конструктор для класса игры
         public DemoGame()
         {
+            // Связывание GraphicsDeviceManager с нашей игрой
             graphics = new GraphicsDeviceManager(this);
+            // Папка, откуда будут подгружаться ресурсы (картинки)
             Content.RootDirectory = "Content";
 
+            // Устанавливаем разрешение игрового окна
             graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
             graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
-          graphics.IsFullScreen = true;
 
-        //    IsMouseVisible = true;
+            // Включаем полноэкранный режим
+            graphics.IsFullScreen = true;
 
         }
 
@@ -104,14 +127,18 @@ namespace GremDemo
         protected override void LoadContent()
         {
 
-            Arial = Content.Load<SpriteFont>("Arial");
-
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // load sprites for gremlin's animation
+            // Подгружаем шрифт
+            Arial = Content.Load<SpriteFont>("Arial");
+
+            // load sprites for:
+            // gremlin's animation
             hero = Content.Load<Texture2D>("GremAnim");
+            // background
             back = Content.Load<Texture2D>("back");
+            // stones
             stone = Content.Load<Texture2D>("stone");
 
             // create initial game objects
@@ -119,6 +146,7 @@ namespace GremDemo
             backGround.Add(new Background(graphics,back));
             NPCs.Add(new NPC(50,400,hero,rnd));
 
+            // цикл для создания камней
             for (int i = 0; i < countOfStones; i++)
             {
                 stones.Add(new Stone(stone, rnd));
@@ -155,42 +183,51 @@ namespace GremDemo
             //Allow the game to restart
             if (Keyboard.GetState().IsKeyDown(Keys.R))
             {
+                // Очищаем игровое поле, устанавливаем все переменные в начальные значения
                 GS = GameState.PAUSED;
                 Score = 0;
-                
+
+                gremlins.Clear();
+                NPCs.Clear();
                 stones.Clear();
 
+                // Заново создаем игровые объекты
                 for (int i = 0; i < countOfStones; i++)
                 {
                     stones.Add(new Stone(stone, rnd));
                 }
-
-                gremlins.Clear();
+                
                 gremlins.Add(new Gremlin(50, 400, hero, rnd));
-
-                NPCs.Clear();
+                
                 NPCs.Add(new NPC(50, 400, hero, rnd));
-            }
+            } // end if for RESTART
 
+            // Обработка состояния паузы игры
             if (GS == GameState.PAUSED)
             {
+                // Если нажат Enter - запустить игру
                 if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                     GS = GameState.RUNNING;
-            }
+            } // end if for PAUSE
 
+            // Обработка непосредственно игрового процесса
             if (GS == GameState.RUNNING)
             {
                 // gameover conditions
                 foreach (Stone stone in stones)
                 {
+                    // Если любой из камней столкнулся с гремлином (персонажем игрока)
                     if (stone.collisionRect.Intersects(gremlins[0].drawRect))
                     {
+                        // Установить состояние игры в GAMEOVER
                         GS = GameState.GAMEOVER;
                     }
                 }
 
+                // Накрутка счетчика очков (по одному за каждую миллисекунду, проведенную в игре)
                 Score += gameTime.ElapsedGameTime.Milliseconds;
 
+                // Вызов метода Update для каждого игрового объекта
                 gremlins[0].Update(gameTime);
                 NPCs[0].Update(gameTime);
 
@@ -200,16 +237,16 @@ namespace GremDemo
                 }
 
                     //Win conditions
-                    if (Score >= SCORE_TO_WIN)
+                if (Score >= SCORE_TO_WIN)
                 {
                     GS = GameState.WIN;
                 }
 
                 // TODO: Add your update logic here
-            }
+            } // end if for RUNNING
 
             base.Update(gameTime);
-        }
+        } // end of Update method
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -217,17 +254,20 @@ namespace GremDemo
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            // Если игра на паузе
             if (GS == GameState.PAUSED)
             {
+                // Очистка экрана
                 GraphicsDevice.Clear(Color.CornflowerBlue);
 
+                // Начинаем рисование 
                 spriteBatch.Begin();
 
-
+                // Отрисовываем игровые объекты и фон
+                // порядок важен, первый нарисованный объект перекрывается последующими
                 backGround[0].Draw(spriteBatch);
                 gremlins[0].Draw(spriteBatch);
                 
-
                 foreach (Stone stone in stones)
                 {
                     stone.Draw(spriteBatch);
@@ -235,27 +275,31 @@ namespace GremDemo
 
                 NPCs[0].Draw(spriteBatch);
 
+                // Отрисовка текста поверх всех остальных спрайтов
                 spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
                 spriteBatch.DrawString(Arial, "Time left: " + (60 - Score / 1000).ToString(), new Vector2(300, 100), Color.Black);
                 spriteBatch.DrawString(Arial,
 "You must stay alive after one minute of the game.\n You get scores for the survival time.\n To start - press ENTER\nTo pause - press TAB\nIf you want to exit - press ESC",
                     new Vector2(400, 100), Color.Black);
 
-
+                // Заверщаем рисование
                 spriteBatch.End();
-            }
+            } // Конец обработки состояния PAUSE
 
+            // Если игра запущена
             if (GS == GameState.RUNNING)
             {
+                // Очистим экран
                 GraphicsDevice.Clear(Color.CornflowerBlue);
 
+                // Начинаем отрисовку
                 spriteBatch.Begin();
-                
 
+                // Отрисовываем игровые объекты и фон
+                // порядок важен, первый нарисованный объект перекрывается последующими
                 backGround[0].Draw(spriteBatch);
                 gremlins[0].Draw(spriteBatch);
                 
-
                 foreach (Stone stone in stones)
                 {
                     stone.Draw(spriteBatch);
@@ -263,50 +307,54 @@ namespace GremDemo
 
                 NPCs[0].Draw(spriteBatch);
 
+                // Отрисовка текста поверх всех остальных спрайтов
                 spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
                 spriteBatch.DrawString(Arial, "Time left: " + (60 - Score / 1000).ToString(), new Vector2(300, 100), Color.Black);
 
-
+                // завершаем отрисовку
                 spriteBatch.End();
-            }
+            } // Конец обработки состояния RUNNING
 
+            // Если игрок выиграл
             if (GS == GameState.WIN)
             {
+                // Очистка экрана
                 GraphicsDevice.Clear(Color.CornflowerBlue);
 
+                // Начинаем отрисовку
                 spriteBatch.Begin();
 
-
+                // Рисуем все игровые объекты кроме камней
                 backGround[0].Draw(spriteBatch);
                 gremlins[0].Draw(spriteBatch);
                 
-
-                //foreach (Stone stone in stones)
-                //{
-                //    stone.Draw(spriteBatch);
-                //}
-
                 NPCs[0].Draw(spriteBatch);
 
+
+                // Отрисовка текста поверх всех остальных спрайтов
                 spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
                 spriteBatch.DrawString(Arial, "Time left: " + (60-Score/1000).ToString(), new Vector2(300, 100), Color.Black);
 
                 spriteBatch.DrawString(Arial, "YOU WIN!\nPRESS ESC TO EXIT.\nPRESS \"R\" TO RESTART", new Vector2(400, 150), Color.Red);
 
-
+                // завершаем отрисовку
                 spriteBatch.End();
-            }
+            } // Конец обработки состояния WIN
 
+            // Если игра проиграна
             if (GS == GameState.GAMEOVER)
             {
+                // Очистка экрана
                 GraphicsDevice.Clear(Color.CornflowerBlue);
 
+                // Начинаем отрисовку
                 spriteBatch.Begin();
 
-
+                // Рисуем все игровые объекты
                 backGround[0].Draw(spriteBatch);
                 gremlins[0].Draw(spriteBatch);
 
+                // Рисуем лишь тот камень, который нас убил
                 foreach (Stone stone in stones)
                 {
                     if (stone.collisionRect.Intersects(gremlins[0].drawRect))
@@ -315,16 +363,20 @@ namespace GremDemo
 
                 NPCs[0].Draw(spriteBatch);
 
+                // Отрисовка текста поверх всех остальных спрайтов
                 spriteBatch.DrawString(Arial, "Score: " + Score.ToString(), new Vector2(100, 100), Color.Black);
                 spriteBatch.DrawString(Arial, "Time left: " + (60 - Score / 1000).ToString(), new Vector2(300, 100), Color.Black);
 
                 spriteBatch.DrawString(Arial, "YOU LOOSE! GAME IS OVER.\nPRESS ESC TO EXIT.\nPRESS \"R\" TO RESTART", new Vector2(400, 150), Color.Red);
 
+                // завершаем отрисовку
                 spriteBatch.End();
-            }
+            } // Конец обработки состояния GAMEOVER
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
-        }
-    }
-}
+        } // end of Draw method
+    } // end class
+} // end namespace
+
+/*    end of file DemoGame.cs */

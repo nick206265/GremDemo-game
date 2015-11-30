@@ -1,7 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿/************************************************************************
+* Project Type : MonoGame Windows project                               *
+* Project Name : GremDemo                                               *
+* File Name    : NPC.cs                                                 *
+* Programmers  : Колесников А.П. Кириллин С.Д.                          *
+* Created      : 17/11/15                                               *
+* Last Revision: 30/11/15                                               *
+* Comments     : MonoGame game project using DirectX                    *
+*                                                                       *
+* Для запуска и сборки данной программы необходимо установить:          *   
+*  1) MonoGame 3.4                                                      *
+*  2) Microsoft .Net Framework 4                                        * 
+* Решение (solution) для Visual Studio 2015 Community                   *
+*************************************************************************/
+
+using System;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,8 +21,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GremDemo
 {
+    // Класс для гремлина, не управляемого игроком
     class NPC : Creature
     {
+        // Конструктор
         public NPC(int X, int Y, Texture2D spriteSheet, Random rnd)
             : base(X, Y, spriteSheet, rnd)
         {
@@ -56,3 +70,4 @@ namespace GremDemo
 
     }
 }
+/*    end of file NPC.cs */
