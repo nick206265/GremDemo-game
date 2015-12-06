@@ -1,12 +1,4 @@
 /************************************************************************
-* Project Type : MonoGame Windows project                               *
-* Project Name : GremDemo                                               *
-* File Name    : DemoGame.cs                                            *
-* Programmers  : Колесников А.П. Кириллин С.Д.                          *
-* Created      : 17/11/15                                               *
-* Last Revision: 30/11/15                                               *
-* Comments     : MonoGame game project using DirectX                    *
-*                                                                       *
 * Для запуска и сборки данной программы необходимо установить:          *   
 *  1) MonoGame 3.4                                                      *
 *  2) Microsoft .Net Framework 4                                        * 
@@ -101,8 +93,8 @@ namespace GremDemo
             graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
 
             // Включаем полноэкранный режим
-            graphics.IsFullScreen = true;
-
+            //graphics.IsFullScreen = true;
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -360,7 +352,7 @@ namespace GremDemo
                     if (stone.collisionRect.Intersects(gremlins[0].drawRect))
                     stone.Draw(spriteBatch);
                 }
-
+                // отрисовка неигрового персонажа
                 NPCs[0].Draw(spriteBatch);
 
                 // Отрисовка текста поверх всех остальных спрайтов
@@ -378,5 +370,3 @@ namespace GremDemo
         } // end of Draw method
     } // end class
 } // end namespace
-
-/*    end of file DemoGame.cs */

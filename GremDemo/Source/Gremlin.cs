@@ -1,12 +1,4 @@
 ﻿/************************************************************************
-* Project Type : MonoGame Windows project                               *
-* Project Name : GremDemo                                               *
-* File Name    : Gremlin.cs                                             *
-* Programmers  : Колесников А.П. Кириллин С.Д.                          *
-* Created      : 17/11/15                                               *
-* Last Revision: 30/11/15                                               *
-* Comments     : MonoGame game project using DirectX                    *
-*                                                                       *
 * Для запуска и сборки данной программы необходимо установить:          *   
 *  1) MonoGame 3.4                                                      *
 *  2) Microsoft .Net Framework 4                                        * 
@@ -21,6 +13,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GremDemo
 {
+    // Класс персонажа, которым управляет игрок
     class Gremlin : Creature
     {
 
@@ -28,6 +21,7 @@ namespace GremDemo
     
         //input support
         //private Keys currentKey;
+        // Объект, возвращающий состояние клавиатуры
         KeyboardState kbState;
         #endregion
 
@@ -38,6 +32,7 @@ namespace GremDemo
 
 
         #region Constructors
+        // Конструктор (см. Creature)
         public Gremlin(int X, int Y, Texture2D spriteSheet, Random rnd)
             :base(X, Y, spriteSheet, rnd)
         {
@@ -47,64 +42,68 @@ namespace GremDemo
 
 
         #region Public methods
-
+        // Метод, реализующий логику поведения игрового персонажа
        public override void Update(GameTime gameTime)
         {
             //Moving by arrows
             //currentKey = Keyboard.GetState().GetPressedKeys().LastOrDefault();
+            // Опрашиваем клавиатуру
             kbState = Keyboard.GetState();
+            // Если нажата клавиша "->"
             if (kbState.IsKeyDown(Keys.Right))
             {
 
-
+                // Поворот направо
                 isRight = true;
 
-                // ?
+                // Реализация ускорения
                 if (velocity.X < MAX_SPEED)
                     velocity.X += 0.2f;
                 else
                     velocity.X = MAX_SPEED;
-
+                // Проиграть анимацию движения
                 Move(gameTime);
 
             }
-
+            // Если нажата клавиша "<-"
             else if (kbState.IsKeyDown(Keys.Left))
             {
+                // Поворот налево
                 isRight = false;
-
+                // Реализация ускорения
                 if (velocity.X > -MAX_SPEED)
                     velocity.X -= 0.2f;
                 else
                     velocity.X = -MAX_SPEED;
 
-
+                // Проиграть анимацию движения
                 Move(gameTime);
             }
-
+            //
             else
             {
-
+                // Если клавиша отпущена, реализуется "торможение"   
                 if (velocity.X > 0)
                     velocity.X -= 0.2f;
                 else if (velocity.X < 0)
                     velocity.X += 0.2f;
                 else
                     velocity.X = 0;
-
+                // Если персонаж не поворачивается, проигрывается анимация Stay
                 if (currentAnimation != (int)Anim.Turn)
                 {
                     Stay(gameTime);
                 }
+                // Иначе - движение прямо
                 else
                 {
                     Move(gameTime);
                 }
 
             }
-
+            // Обновляем координаты персонажа
             drawRect.X += (int)(velocity.X);
-            drawRect.Y += (int)(velocity.Y);    //?
+            drawRect.Y += (int)(velocity.Y);    
 
             //Level borders
             if (drawRect.X >= 650)
@@ -115,7 +114,7 @@ namespace GremDemo
             {
                 drawRect.X = 10;
             }
-
+            // Запоминаем предыдущую анимацию
             prevAnimation = currentAnimation;
 
         }
@@ -127,4 +126,3 @@ namespace GremDemo
         #endregion
     }
 }
-/*    end of file Gremlin.cs */
