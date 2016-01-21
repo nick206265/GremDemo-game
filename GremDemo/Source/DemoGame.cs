@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 // Обработка ввода (клавиатура, мышь)
 using Microsoft.Xna.Framework.Input;
-
+// for music
 using Microsoft.Xna.Framework.Media;
 
 namespace GremDemo
@@ -27,7 +27,6 @@ namespace GremDemo
         PAUSED,
         WIN,
         GAMEOVER
-
     }
 
     /// <summary>
@@ -36,13 +35,13 @@ namespace GremDemo
     public class DemoGame : Microsoft.Xna.Framework.Game
     {
         //Initial state of the game - pause
-        GameState GS = GameState.PAUSED;
+        GameState GS;
 
         //Font for all symbols in the game
         SpriteFont Arial;
 
         //Random generator (for Idle anim in general)
-        Random rnd = new Random();
+        Random rnd;
 
         //Screen(game window) resolution
         const int WINDOW_WIDTH = 800;
@@ -62,21 +61,15 @@ namespace GremDemo
         // for gremlin drawing method
         Texture2D hero;
 
-        // for stones
-        Texture2D stone;
-
         // Collections for game objects
         // List of gremlins
-        List<Gremlin> gremlins = new List<Gremlin>();
+        List<Gremlin> gremlins;
 
         // List of Background objects
-        List<Background> backGround = new List<Background>();
+        List<Background> backGround;
 
         // List of NPCs
-        List<NPC> NPCs = new List<NPC>();
-
-        // List of stones
-        List<Stone> stones = new List<Stone>();
+        List<NPC> NPCs;
 
         // Конструктор для класса игры
         public DemoGame()
@@ -105,7 +98,16 @@ namespace GremDemo
         {
 
             // TODO: Add your initialization logic here
+            GS = GameState.PAUSED;
 
+            rnd = new Random();
+
+            gremlins = new List<Gremlin>();
+            NPCs = new List<NPC>();
+            backGround = new List<Background>();
+
+            // Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
             base.Initialize();
         }
@@ -116,10 +118,6 @@ namespace GremDemo
         /// </summary>
         protected override void LoadContent()
         {
-
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
             // Load song
             //song = Content.Load<Song>(@"Music\COMBAT04");
 
@@ -137,8 +135,6 @@ namespace GremDemo
             hero = Content.Load<Texture2D>(@"Sprites\GremAnim");
             // background
             back = Content.Load<Texture2D>(@"Sprites\back");
-            // stones
-            stone = Content.Load<Texture2D>(@"Sprites\stone");
 
             // create initial game objects
             gremlins.Add(new Gremlin(50, 400,hero,rnd));
@@ -181,7 +177,6 @@ namespace GremDemo
 
                 gremlins.Clear();
                 NPCs.Clear();
-                stones.Clear();
                 
                 gremlins.Add(new Gremlin(50, 400, hero, rnd));
                 
@@ -200,25 +195,10 @@ namespace GremDemo
             if (GS == GameState.RUNNING)
             {
                 // gameover conditions
-                foreach (Stone stone in stones)
-                {
-                    // Если любой из камней столкнулся с гремлином (персонажем игрока)
-                    if (stone.collisionRect.Intersects(gremlins[0].drawRect))
-                    {
-                        // Установить состояние игры в GAMEOVER
-                        GS = GameState.GAMEOVER;
-                    }
-                }
-
 
                 // Вызов метода Update для каждого игрового объекта
                 gremlins[0].Update(gameTime);
                 NPCs[0].Update(gameTime);
-
-                foreach (Stone stone in stones)
-                {
-                    stone.Update(gameTime);
-                }
 
                     //Win conditions
 
@@ -248,17 +228,12 @@ namespace GremDemo
                 // порядок важен, первый нарисованный объект перекрывается последующими
                 backGround[0].Draw(spriteBatch);
                 gremlins[0].Draw(spriteBatch);
-                
-                foreach (Stone stone in stones)
-                {
-                    stone.Draw(spriteBatch);
-                }
 
                 NPCs[0].Draw(spriteBatch);
 
                 // Отрисовка текста поверх всех остальных спрайтов
                 spriteBatch.DrawString(Arial,
-"To start - press ENTER\nTo pause - press TAB\nIf you want to exit - press ESC",
+                "To start - press ENTER\nTo pause - press TAB\nIf you want to exit - press ESC",
                     new Vector2(400, 100), Color.Black);
 
                 // Заверщаем рисование
@@ -278,11 +253,6 @@ namespace GremDemo
                 // порядок важен, первый нарисованный объект перекрывается последующими
                 backGround[0].Draw(spriteBatch);
                 gremlins[0].Draw(spriteBatch);
-                
-                foreach (Stone stone in stones)
-                {
-                    stone.Draw(spriteBatch);
-                }
 
                 NPCs[0].Draw(spriteBatch);
 
